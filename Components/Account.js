@@ -4,6 +4,8 @@ import axios from 'axios'
 import {
   SafeAreaView,
   SectionList,
+  StyleSheet,
+  Button,
   Text,
   Switch,
   View
@@ -13,7 +15,7 @@ import Current from './Current'
 
 import { API_URL } from 'react-native-dotenv'
 
-export default function Account () {
+export default function Account ({ navigation }) {
   const { settings, setSettings } = useContext(Current)
 
   const [countries, setCountries] = useState()
@@ -23,7 +25,6 @@ export default function Account () {
       const { data } = await axios.get(API_URL + '/countries.json')
 
       setCountries(data.countries)
-      // console.log(data.countries)
     }
 
     _fetch()
@@ -46,31 +47,39 @@ export default function Account () {
   }, [countries])
 
   useEffect(() => {
-    if (values && Object.values(values).filter(val => val).length > 0) setSettings(values)
+    if (values) {
+      setSettings(values)
+    }
   }, [values])
 
-  // if (countries) {
-  //   console.log(countries.map(country => ({ ...country, data: country.leagues })))
-  // }
-
   const handleStatusChange = (id, status) => {
-    // console.log({ ...values, id: status })
-    if (values[id] !== status) {
-      setValues({ ...values, [id]: status })
-    }
+    setValues({ ...values, [id]: status })
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       {countries && values &&
         <SectionList
+          stickySectionHeadersEnabled={false}
           sections={countries.map(country => ({ ...country, data: country.leagues }))}
           renderSectionHeader={({ section: { name } }) => (
-            <Text>{name}</Text>
+            <Text style={styles.country}>{name}</Text>
           )}
           renderItem={({ item }) => <League {...item} onStatusChange={handleStatusChange} values={values} />}
         />
       }
+
+      <View style={styles.ready}>
+        <Text>
+          {Object.values(settings).filter(value => value).length}
+        </Text>
+        <Button
+          title="Готово!"
+          disabled={!settings || Object.values(settings).filter(value => value).length === 0}
+          onPress={() => navigation.navigate('Index')}
+        />
+      </View>
+
     </SafeAreaView>
   )
 }
@@ -83,9 +92,40 @@ function League ({ id, name, onStatusChange, values }) {
   }, [status])
 
   return (
-    <View>
-      <Text>{name}</Text>
+    <View style={styles.league}>
+      <Text style={styles.name}>{name}</Text>
       <Switch value={status} onValueChange={value => setStatus(value)} />
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+
+  country: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginLeft: 16,
+    marginTop: 32
+  },
+
+  ready: {
+    padding: 16
+  },
+
+  league: {
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    // marginBottom: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8
+  },
+
+  name: {
+    marginRight: 'auto'
+  }
+})
