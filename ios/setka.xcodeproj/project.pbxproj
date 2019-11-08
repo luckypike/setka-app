@@ -530,6 +530,7 @@
 				DEVELOPMENT_TEAM = V83UBNBP3G;
 				INFOPLIST_FILE = setka/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -551,6 +552,7 @@
 				DEVELOPMENT_TEAM = V83UBNBP3G;
 				INFOPLIST_FILE = setka/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
