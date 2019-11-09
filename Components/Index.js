@@ -14,6 +14,7 @@ import {
 import { Svg, Circle, Path } from 'react-native-svg'
 
 import Current from './Current'
+
 import Fixtures from './Index/Fixtures'
 
 import { API_URL } from 'react-native-dotenv'
