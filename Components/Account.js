@@ -70,9 +70,6 @@ export default function Account ({ navigation }) {
       }
 
       <View style={styles.ready}>
-        <Text>
-          {Object.values(settings).filter(value => value).length}
-        </Text>
         <Button
           title="Готово!"
           disabled={!settings || Object.values(settings).filter(value => value).length === 0}
