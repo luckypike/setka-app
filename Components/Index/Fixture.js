@@ -13,7 +13,12 @@ import Score from './Score'
 
 export default function Fixture ({ fixture }) {
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        ((fixture.score && !fixture.end && fixture.minute >= 0) ? styles.live : styles.nolive)
+      ]}
+    >
       <View style={[styles.team, styles.local]}>
         <Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
           {fixture.local_team.name}
@@ -54,18 +59,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
 
+  live: {
+    paddingBottom: 16
+  },
+
   time: {
     backgroundColor: '#f4f4f4',
     flexBasis: 50,
     marginHorizontal: 8,
-    paddingVertical: 4
+    paddingVertical: 4,
+    alignSelf: 'center'
   },
 
   scores: {
     backgroundColor: '#f4f4f4',
     flexBasis: 50,
     marginHorizontal: 8,
-    paddingVertical: 4
+    paddingVertical: 4,
+    alignSelf: 'center'
   },
 
   end: {

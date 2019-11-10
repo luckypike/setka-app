@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import useAppState from 'react-native-appstate-hook'
 
 import {
   SafeAreaView,
@@ -22,9 +23,8 @@ import { API_URL } from 'react-native-dotenv'
 export default function Index ({ navigation }) {
   const { settings } = useContext(Current)
 
-  const [date, setDate] = useState(dayjs())
+  const [date] = useState(dayjs())
   const [leagues, setLeagues] = useState()
-  const [fixtures, setFixtures] = useState()
 
   useEffect(() => {
     if (settings) {
@@ -33,6 +33,16 @@ export default function Index ({ navigation }) {
       navigation.navigate('Account')
     }
   }, [settings])
+
+  const [reload, setReload] = useState(true)
+
+  const { _appState } = useAppState({
+    onForeground: () => {
+      setReload(true)
+    }
+  })
+
+  const [fixtures, setFixtures] = useState()
 
   useEffect(() => {
     const _fetch = async () => {
@@ -45,10 +55,11 @@ export default function Index ({ navigation }) {
       })
 
       setFixtures(data.leagues)
+      setReload(false)
     }
 
-    if (leagues && date) _fetch()
-  }, [leagues, date])
+    if (leagues && date && reload) _fetch()
+  }, [leagues, date, reload])
 
   return (
     <SafeAreaView style={styles.container}>
