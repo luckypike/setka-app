@@ -23,7 +23,7 @@ export default function Fixture ({ fixture }) {
         <Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
           {fixture.local_team.name}
         </Text>
-        <Image style={styles.logo} source={{ uri: fixture.local_team.logo }} />
+        <Image style={styles.logo} source={{ uri: fixture.local_team.logo }} resizeMode="contain" />
       </View>
 
       {!fixture.score &&
@@ -41,7 +41,7 @@ export default function Fixture ({ fixture }) {
       }
 
       <View style={[styles.team, styles.visitor]}>
-        <Image style={styles.logo} source={{ uri: fixture.visitor_team.logo }} />
+        <Image style={styles.logo} source={{ uri: fixture.visitor_team.logo }} resizeMode="contain" />
         <Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
           {fixture.visitor_team.name}
         </Text>

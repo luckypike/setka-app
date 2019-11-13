@@ -16,6 +16,7 @@ import { Svg, Circle, Path } from 'react-native-svg'
 
 import Current from './Current'
 
+import Days from './Index/Days'
 import Fixtures from './Index/Fixtures'
 
 import { API_URL } from 'react-native-dotenv'
@@ -23,7 +24,7 @@ import { API_URL } from 'react-native-dotenv'
 export default function Index ({ navigation }) {
   const { settings } = useContext(Current)
 
-  const [date] = useState(dayjs())
+  const [date, setDate] = useState(dayjs())
   const [leagues, setLeagues] = useState()
 
   useEffect(() => {
@@ -61,6 +62,11 @@ export default function Index ({ navigation }) {
     if (leagues && date && reload) _fetch()
   }, [leagues, date, reload])
 
+  const handleDateChange = value => {
+    setDate(value)
+    setReload(true)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -78,6 +84,8 @@ export default function Index ({ navigation }) {
             <Account />
           </TouchableOpacity>
         </View>
+
+        <Days onDateChange={handleDateChange} initDate={date} />
 
         {fixtures &&
           <Fixtures fixtures={fixtures} />
