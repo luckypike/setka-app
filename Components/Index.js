@@ -85,7 +85,11 @@ export default function Index ({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <Days onDateChange={handleDateChange} initDate={date} />
+        <Days
+          onDateChange={handleDateChange}
+          initDate={date}
+          leagues={leagues}
+        />
 
         {fixtures &&
           <Fixtures fixtures={fixtures} />

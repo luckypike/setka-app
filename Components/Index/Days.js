@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
+import axios from 'axios'
+import dayjs from 'dayjs'
 
 import {
   StyleSheet,
@@ -8,7 +11,15 @@ import {
   Text
 } from 'react-native'
 
-export default function Days ({ initDate, onDateChange }) {
+import { API_URL } from 'react-native-dotenv'
+
+Days.propTypes = {
+  initDate: PropTypes.object,
+  onDateChange: PropTypes.func,
+  leagues: PropTypes.array
+}
+
+export default function Days ({ initDate, onDateChange, leagues }) {
   const daysRef = useRef()
 
   const [date, setDate] = useState(initDate)
@@ -21,8 +32,26 @@ export default function Days ({ initDate, onDateChange }) {
   })
 
   useEffect(() => {
-    daysRef.current.scrollToIndex({ index: 6 })
+    daysRef.current.scrollToIndex({ animated: false, index: 6 })
   }, [])
+
+  const [fixtures, setFixtures] = useState()
+
+  useEffect(() => {
+    const _fetch = async () => {
+      const { data } = await axios.get(API_URL + '/fixtures/days.json', {
+        params: {
+          leagues,
+          from: days[0].date.startOf('day').format(),
+          to: days[days.length - 1].date.startOf('day').format()
+        }
+      })
+
+      setFixtures(data.fixtures)
+    }
+
+    if (leagues) _fetch()
+  }, [leagues])
 
   const handleDayPress = value => {
     setDate(value)
@@ -40,6 +69,10 @@ export default function Days ({ initDate, onDateChange }) {
         style={styles.days}
         renderItem={({ item, index, separators }) =>
           <Day
+            count={() => {
+              const f = fixtures && fixtures.find(f => item.date.isSame(dayjs(f.date), 'day'))
+              return (f && f.count) || null
+            }}
             onDayPress={handleDayPress}
             day={item.date}
             active={item.date.isSame(date, 'day')}
@@ -51,7 +84,9 @@ export default function Days ({ initDate, onDateChange }) {
   )
 }
 
-function Day ({ day, active, onDayPress }) {
+function Day ({ day, active, onDayPress, count }) {
+  const fixtures = count()
+
   return (
     <TouchableOpacity
       style={[
@@ -60,6 +95,11 @@ function Day ({ day, active, onDayPress }) {
       ]}
       onPress={() => onDayPress(day)}
     >
+      {fixtures &&
+        <Text style={styles.fixtures}>
+          {fixtures}
+        </Text>
+      }
       <Text style={[styles.dd, active ? styles.activeText : styles.inactiveText]}>
         {day.format('dd')}
       </Text>
@@ -80,17 +120,31 @@ const styles = StyleSheet.create({
   },
 
   days: {
-    // paddingHorizontal: 16,
     flexDirection: 'row'
   },
 
   day: {
     width: 48,
     marginLeft: 8,
-    borderRadius: 8,
     backgroundColor: '#e1e1e1',
     paddingTop: 8,
-    paddingBottom: 16
+    paddingBottom: 24,
+    position: 'relative'
+  },
+
+  fixtures: {
+    position: 'absolute',
+    bottom: 4,
+    left: '50%',
+    width: 16,
+    height: 16,
+    fontSize: 10,
+    fontWeight: 'bold',
+    backgroundColor: '#ffffff',
+    textAlign: 'center',
+    lineHeight: 16,
+    // borderRadius: 8,
+    marginLeft: -8
   },
 
   activeDay: {
