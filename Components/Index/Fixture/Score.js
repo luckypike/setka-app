@@ -1,11 +1,15 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 
 import {
   StyleSheet,
   View,
   Text
 } from 'react-native'
+
+Score.propTypes = {
+  fixture: PropTypes.object
+}
 
 export default function Score ({ fixture }) {
   const textColor = fixture.end ? styles.end : styles.running
@@ -36,7 +40,7 @@ export default function Score ({ fixture }) {
             style={styles.matchtime}
             left={`${(fixture.minute > 90 ? 1 : fixture.minute / 90) * 100}%`}
           >
-            {fixture.minute}'
+            {fixture.minute}{'\''}
           </Text>
 
           <View

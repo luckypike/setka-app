@@ -1,52 +1,74 @@
-import React from 'react'
-// import PropTypes from 'prop-types'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
 
 import {
   StyleSheet,
   Image,
   View,
+  TouchableOpacity,
   Text
 } from 'react-native'
 
-import Score from './Score'
+import Score from './Fixture/Score'
+import Details from './Fixture/Details'
+
+Fixture.propTypes = {
+  fixture: PropTypes.object
+}
 
 export default function Fixture ({ fixture }) {
-  return (
-    <View
-      style={[
-        styles.container,
-        ((fixture.score && !fixture.end && fixture.minute >= 0) ? styles.live : styles.nolive)
-      ]}
-    >
-      <View style={[styles.team, styles.local]}>
-        <Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
-          {fixture.local_team.name}
-        </Text>
-        <Image style={styles.logo} source={{ uri: fixture.local_team.logo }} resizeMode="contain" />
-      </View>
+  const [active, setActive] = useState(true)
 
-      {!fixture.score &&
-        <View style={styles.time}>
-          <Text style={styles.timeText}>
-            {dayjs(fixture.starting_at).format('HH:mm')}
+  const hasActive = () => {
+    return (fixture.local_team.standing && fixture.visitor_team.standing) || fixture.events.length > 0
+  }
+
+  return (
+    <>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => setActive(!active)}
+        style={[
+          styles.container,
+          ((fixture.score && !fixture.end && fixture.minute >= 0) ? styles.live : styles.nolive)
+        ]}
+      >
+        <View style={[styles.team, styles.local]}>
+          <Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+            {fixture.local_team.name}
+          </Text>
+          <Image style={styles.logo} source={{ uri: fixture.local_team.logo }} resizeMode="contain" />
+        </View>
+
+        {!fixture.score &&
+          <View style={styles.time}>
+            <Text style={styles.timeText}>
+              {dayjs(fixture.starting_at).format('HH:mm')}
+            </Text>
+          </View>
+        }
+
+        {fixture.score &&
+          <View style={[styles.scores, fixture.end ? styles.end : styles.running]}>
+            <Score fixture={fixture} />
+          </View>
+        }
+
+        <View style={[styles.team, styles.visitor]}>
+          <Image style={styles.logo} source={{ uri: fixture.visitor_team.logo }} resizeMode="contain" />
+          <Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+            {fixture.visitor_team.name}
           </Text>
         </View>
-      }
+      </TouchableOpacity>
 
-      {fixture.score &&
-        <View style={[styles.scores, fixture.end ? styles.end : styles.running]}>
-          <Score fixture={fixture} />
-        </View>
+      {active && hasActive() &&
+        <Details
+          fixture={fixture}
+        />
       }
-
-      <View style={[styles.team, styles.visitor]}>
-        <Image style={styles.logo} source={{ uri: fixture.visitor_team.logo }} resizeMode="contain" />
-        <Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
-          {fixture.visitor_team.name}
-        </Text>
-      </View>
-    </View>
+    </>
   )
 }
 
@@ -55,7 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingVertical: 8,
     paddingHorizontal: 16,
-    marginBottom: 4,
+    marginTop: 4,
     flexDirection: 'row'
   },
 
