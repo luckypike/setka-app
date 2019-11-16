@@ -18,7 +18,7 @@ Fixture.propTypes = {
 }
 
 export default function Fixture ({ fixture }) {
-  const [active, setActive] = useState(true)
+  const [active, setActive] = useState(false)
 
   const hasActive = () => {
     return (fixture.local_team.standing && fixture.visitor_team.standing) || fixture.events.length > 0
