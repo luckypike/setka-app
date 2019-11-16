@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 import axios from 'axios'
+import dayjs from 'dayjs'
 
 import Navigator from './Components/Navigator'
 import Current from './Components/Current'
@@ -29,6 +30,7 @@ export default function App () {
     const _push = async () => {
       await axios.patch(API_URL + '/device', {
         device: {
+          timezone: dayjs().utcOffset(),
           token,
           league_ids: Object.entries(settings).filter(ob => ob[1]).map(ob => parseInt(ob[0], 10))
         }
