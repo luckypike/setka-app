@@ -22,18 +22,14 @@ import Fixtures from './Index/Fixtures'
 import { API_URL } from 'react-native-dotenv'
 
 export default function Index ({ navigation }) {
-  const { settings } = useContext(Current)
+  const { myLeagues } = useContext(Current)
 
   const [date, setDate] = useState(dayjs())
   const [leagues, setLeagues] = useState()
 
   useEffect(() => {
-    if (settings) {
-      setLeagues(Object.entries(settings).filter(ob => ob[1]).map(ob => parseInt(ob[0], 10)))
-    } else {
-      navigation.navigate('Account')
-    }
-  }, [settings])
+    setLeagues([...myLeagues].filter(ob => ob[1]).map(ob => ob[0]))
+  }, [myLeagues])
 
   const [reload, setReload] = useState(true)
 

@@ -9,22 +9,58 @@ import Current from './Components/Current'
 
 import { API_URL } from 'react-native-dotenv'
 
-const settingsKey = '@Setka:settingsKey'
+// const settingsKey = '@Setka:settingsKey'
+const leaguesKey = '@Setka:leaguesKey'
+const teamsKey = '@Setka:teamsKey'
 
 export default function App () {
-  const [settings, setSettings] = useState()
+  // const [settings, setSettings] = useState()
+  const [myLeagues, setMyLeagues] = useState()
+  const [myTeams, setMyTeams] = useState()
 
   useEffect(() => {
     const _getSettings = async () => {
+      // const prevLeagues = JSON.parse(await AsyncStorage.getItem(settingsKey))
       // await AsyncStorage.removeItem(settingsKey)
-      const value = await AsyncStorage.getItem(settingsKey)
-      const storedSettings = JSON.parse(value)
+      // console.log(await AsyncStorage.getItem(leaguesKey))
+      await AsyncStorage.removeItem(leaguesKey)
+      const leagues = new Map(
+        JSON.parse(
+          await AsyncStorage.getItem(leaguesKey)
+        ) || [[524, true], [518, true]]
+      )
 
-      setSettings(storedSettings)
+      const teams = new Map(
+        JSON.parse(
+          await AsyncStorage.getItem(teamsKey)
+        )
+      )
+
+      // console.log(leagues)
+
+      // if (leagues.size === 0 && prevLeagues) {
+      //   leagues = new Map(Object.entries(prevLeagues))
+      // }
+      //
+      // console.log(leagues)
+
+      // const value = await AsyncStorage.getItem(settingsKey)
+      // const storedSettings = JSON.parse(value)
+
+      // console.log(storedSettings)
+
+      setMyLeagues(leagues)
+      setMyTeams(teams)
     }
 
     _getSettings()
   }, [])
+
+  useEffect(() => {
+    if (myLeagues) {
+      AsyncStorage.setItem(leaguesKey, JSON.stringify([...myLeagues]))
+    }
+  }, [myLeagues])
 
   useEffect(() => {
     const _push = async () => {
@@ -32,18 +68,18 @@ export default function App () {
         device: {
           timezone: dayjs().utcOffset(),
           token,
-          league_ids: Object.entries(settings).filter(ob => ob[1]).map(ob => parseInt(ob[0], 10))
+          team_ids: [...myTeams].filter(ob => ob[1]).map(ob => ob[0])
         }
       })
     }
 
-    if (settings) {
-      AsyncStorage.setItem(settingsKey, JSON.stringify(settings))
+    if (myTeams) {
+      AsyncStorage.setItem(teamsKey, JSON.stringify([...myTeams]))
       if (token) _push()
     }
-  }, [settings])
+  }, [myTeams])
 
-  const [token, setToken] = useState()
+  const [token, setToken] = useState('QQQQ')
 
   useEffect(() => {
     PushNotificationIOS.addEventListener(
@@ -70,10 +106,17 @@ export default function App () {
     PushNotificationIOS.requestPermissions()
   }, [])
 
-  if (settings === undefined) return null
+  if (myLeagues === undefined) return null
 
   return (
-    <Current.Provider value={{ settings, setSettings }}>
+    <Current.Provider
+      value={{
+        myLeagues,
+        setMyLeagues,
+        myTeams,
+        setMyTeams
+      }}
+    >
       <Navigator />
     </Current.Provider>
   )
