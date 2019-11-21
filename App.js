@@ -27,7 +27,9 @@ export default function App () {
       const leagues = new Map(
         JSON.parse(
           await AsyncStorage.getItem(leaguesKey)
-        ) || [[524, true], [518, true]]
+        ) || [
+          [524, true], [754, true], [530, true], [754, true], [403, true]
+        ]
       )
 
       const teams = new Map(
@@ -79,7 +81,7 @@ export default function App () {
     }
   }, [myTeams])
 
-  const [token, setToken] = useState('QQQQ')
+  const [token, setToken] = useState()
 
   useEffect(() => {
     PushNotificationIOS.addEventListener(
