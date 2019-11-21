@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  Switch,
   View
 } from 'react-native'
 
@@ -24,6 +25,7 @@ export default function League ({ navigation }) {
   const league = navigation.getParam('league')
 
   const { myTeams, setMyTeams } = useContext(Current)
+  const { myLeagues, setMyLeagues } = useContext(Current)
 
   useEffect(() => {
     navigation.setParams({ title: league.name })
@@ -36,9 +38,43 @@ export default function League ({ navigation }) {
     setMyTeams(newMyTeams)
   }
 
+  const handleLeaguePress = value => {
+    const newMyLeagues = new Map(myLeagues)
+    newMyLeagues.set(league.id, value)
+
+    setMyLeagues(newMyLeagues)
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scroll}>
+        <Text style={styles.leagueName}>
+          {league.name}
+        </Text>
+
+        <Text style={styles.desc}>
+          Включить лигу если хотите чтобы все матчи этой лиги были видны в вашем расписании мачтей
+        </Text>
+
+        <View style={styles.league}>
+          <View style={styles.leagueText}>
+            <Text>
+              Показывать в сетке
+            </Text>
+          </View>
+
+          <View style={styles.leagueSwitch}>
+            <Switch
+              value={!!myLeagues.get(league.id)}
+              onValueChange={handleLeaguePress}
+            />
+          </View>
+        </View>
+
+        <Text style={styles.desc}>
+          Выберите команды чтобы получать уведомления за 1 час до начала их мачта
+        </Text>
+
         <View style={styles.teams}>
           {league.teams.map((team, i) =>
             <TouchableOpacity
@@ -81,6 +117,39 @@ const styles = StyleSheet.create({
 
   scroll: {
     padding: 16
+  },
+
+  league: {
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    marginBottom: 32,
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 8
+  },
+
+  leagueName: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginTop: 16,
+    marginBottom: 16
+  },
+
+  desc: {
+    marginBottom: 16
+  },
+
+  leagueText: {
+    paddingRight: 16,
+    flexBasis: '80%'
+  },
+
+  leagueSwitch: {
+    // backgroundColor: 'green',
+    flexShrink: 0,
+    flexBasis: 60,
+    marginLeft: 'auto'
   },
 
   teams: {

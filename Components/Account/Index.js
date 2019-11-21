@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
@@ -12,8 +12,6 @@ import {
   View
 } from 'react-native'
 
-import Current from '../Current'
-
 import { API_URL } from 'react-native-dotenv'
 
 Index.propTypes = {
@@ -21,12 +19,17 @@ Index.propTypes = {
 }
 
 Index.navigationOptions = ({ navigation, navigationOptions }) => ({
-  headerBackTitle: 'Назад'
+  headerBackTitle: 'Назад',
+  headerLeft: (
+    <TouchableOpacity onPress={() => navigation.navigate('Index')}>
+      <Text style={styles.cancel}>
+        Готово
+      </Text>
+    </TouchableOpacity>
+  )
 })
 
 export default function Index ({ navigation }) {
-  const { myTeams, setMyTeams } = useContext(Current)
-
   const [countries, setCountries] = useState()
 
   useEffect(() => {
@@ -83,21 +86,6 @@ export default function Index ({ navigation }) {
   )
 }
 
-// function League ({ id, name, onStatusChange, values }) {
-//   const [status, setStatus] = useState(values[id])
-//
-//   useEffect(() => {
-//     onStatusChange && onStatusChange(id, status)
-//   }, [status])
-//
-//   return (
-//     <View style={styles.league}>
-//       <Text style={styles.name}>{name}</Text>
-//       <Switch value={status} onValueChange={value => setStatus(value)} />
-//     </View>
-//   )
-// }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -106,14 +94,11 @@ const styles = StyleSheet.create({
 
   countries: {
     padding: 16
-    // backgroundColor: 'red'
-    // flex: 1
   },
 
   country: {
     fontWeight: 'bold',
     fontSize: 18,
-    // marginLeft: 16,
     marginBottom: 16
   },
 
@@ -135,6 +120,12 @@ const styles = StyleSheet.create({
   noFirstLeague: {
     borderTopColor: '#ddd',
     borderTopWidth: 0.5
+  },
+
+  cancel: {
+    fontSize: 17,
+    marginHorizontal: 16,
+    color: '#0d7ffb'
   },
 
   desc: {
