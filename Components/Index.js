@@ -33,7 +33,7 @@ export default function Index ({ navigation }) {
 
   const [reload, setReload] = useState(true)
 
-  const { _appState } = useAppState({
+  const { appState } = useAppState({
     onForeground: () => {
       setReload(true)
     }
@@ -85,6 +85,7 @@ export default function Index ({ navigation }) {
           onDateChange={handleDateChange}
           initDate={date}
           leagues={leagues}
+          appState={appState}
         />
 
         {fixtures &&

@@ -32,7 +32,7 @@ Index.navigationOptions = ({ navigation, navigationOptions }) => ({
 })
 
 export default function Index ({ navigation }) {
-  const { myTeams, setMyTeams } = useContext(Current)
+  const { myTeams } = useContext(Current)
 
   const [countries, setCountries] = useState()
 

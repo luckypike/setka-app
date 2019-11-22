@@ -14,12 +14,13 @@ import {
 import { API_URL } from 'react-native-dotenv'
 
 Days.propTypes = {
+  appState: PropTypes.string,
   initDate: PropTypes.object,
   onDateChange: PropTypes.func,
   leagues: PropTypes.array
 }
 
-export default function Days ({ initDate, onDateChange, leagues }) {
+export default function Days ({ initDate, onDateChange, leagues, appState }) {
   const daysRef = useRef()
 
   const [date, setDate] = useState(initDate)
@@ -32,8 +33,10 @@ export default function Days ({ initDate, onDateChange, leagues }) {
   })
 
   useEffect(() => {
-    daysRef.current.scrollToIndex({ animated: false, index: 6 })
-  }, [])
+    if (appState === 'active' && date.isSame(dayjs(), 'day')) {
+      daysRef.current.scrollToIndex({ animated: true, index: 6 })
+    }
+  }, [appState])
 
   const [fixtures, setFixtures] = useState()
 
@@ -65,6 +68,7 @@ export default function Days ({ initDate, onDateChange, leagues }) {
         getItemLayout={(data, index) => ({ length: 56, offset: 56 * index, index })}
         data={days}
         horizontal={true}
+        initialScrollIndex={6}
         showsHorizontalScrollIndicator={false}
         style={styles.days}
         renderItem={({ item, index, separators }) =>
@@ -86,6 +90,7 @@ export default function Days ({ initDate, onDateChange, leagues }) {
 
 function Day ({ day, active, onDayPress, count }) {
   const fixtures = count()
+  const today = day.isSame(dayjs(), 'day')
 
   return (
     <TouchableOpacity
@@ -109,6 +114,9 @@ function Day ({ day, active, onDayPress, count }) {
       <Text style={[styles.mm, active ? styles.activeText : styles.inactiveText]}>
         {day.format('MMM')}
       </Text>
+      {today &&
+        <View style={styles.today} />
+      }
     </TouchableOpacity>
   )
 }
@@ -130,6 +138,15 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 24,
     position: 'relative'
+  },
+
+  today: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    left: 0,
+    height: 4,
+    backgroundColor: 'red'
   },
 
   fixtures: {
