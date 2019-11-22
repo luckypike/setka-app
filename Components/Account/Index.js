@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
@@ -11,6 +11,8 @@ import {
   Text,
   View
 } from 'react-native'
+
+import Current from '../Current'
 
 import { API_URL } from 'react-native-dotenv'
 
@@ -30,6 +32,8 @@ Index.navigationOptions = ({ navigation, navigationOptions }) => ({
 })
 
 export default function Index ({ navigation }) {
+  const { myTeams, setMyTeams } = useContext(Current)
+
   const [countries, setCountries] = useState()
 
   useEffect(() => {
@@ -41,6 +45,8 @@ export default function Index ({ navigation }) {
 
     _fetch()
   }, [])
+
+  const myTeamIds = [...myTeams].filter(ob => ob[1]).map(ob => ob[0])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,9 +76,11 @@ export default function Index ({ navigation }) {
                           {league.name}
                         </Text>
 
-                        <Text style={styles.desc}>
-                          Сколько команд и сколько подписано
-                        </Text>
+                        {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length > 0 &&
+                          <Text style={styles.desc}>
+                            уведомления: {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length} ком.
+                          </Text>
+                        }
                       </View>
                     </View>
                   </TouchableOpacity>
@@ -130,7 +138,7 @@ const styles = StyleSheet.create({
 
   desc: {
     color: '#777777',
-    fontSize: 14
+    fontSize: 12
   },
 
   logo: {

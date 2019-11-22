@@ -23,7 +23,7 @@ export default function App () {
       // const prevLeagues = JSON.parse(await AsyncStorage.getItem(settingsKey))
       // await AsyncStorage.removeItem(settingsKey)
       // console.log(await AsyncStorage.getItem(leaguesKey))
-      await AsyncStorage.removeItem(leaguesKey)
+      // await AsyncStorage.removeItem(leaguesKey)
       const leagues = new Map(
         JSON.parse(
           await AsyncStorage.getItem(leaguesKey)
