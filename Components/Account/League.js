@@ -53,7 +53,7 @@ export default function League ({ navigation }) {
         </Text>
 
         <Text style={styles.desc}>
-          Включить лигу если хотите чтобы все матчи этой лиги были видны в вашем расписании мачтей
+          Включить лигу если хотите чтобы все матчи этой лиги были видны в вашем расписании матчей
         </Text>
 
         <View style={styles.league}>
