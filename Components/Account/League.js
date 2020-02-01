@@ -1,5 +1,6 @@
-import React, { useEffect, useContext } from 'react'
-import PropTypes from 'prop-types'
+import React, { useContext } from 'react'
+import { useRoute } from '@react-navigation/native'
+// import PropTypes from 'prop-types'
 
 import {
   StyleSheet,
@@ -13,23 +14,12 @@ import {
 
 import Current from '../Current'
 
-League.propTypes = {
-  navigation: PropTypes.object
-}
-
-League.navigationOptions = ({ navigation }) => ({
-  title: navigation.getParam('title')
-})
-
-export default function League ({ navigation }) {
-  const league = navigation.getParam('league')
+export default function League () {
+  const route = useRoute()
+  const { league } = route.params
 
   const { myTeams, setMyTeams } = useContext(Current)
   const { myLeagues, setMyLeagues } = useContext(Current)
-
-  useEffect(() => {
-    navigation.setParams({ title: league.name })
-  }, [league])
 
   const handleTeamPress = id => {
     const newMyTeams = new Map(myTeams)
@@ -48,10 +38,6 @@ export default function League ({ navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scroll}>
-        <Text style={styles.leagueName}>
-          {league.name}
-        </Text>
-
         <Text style={styles.desc}>
           Включить лигу если хотите чтобы все матчи этой лиги были видны в вашем расписании матчей
         </Text>
@@ -96,7 +82,7 @@ export default function League ({ navigation }) {
 
               {!!myTeams.get(team.id) &&
                 <View style={styles.inMyTeams}>
-                  <Text>
+                  <Text style={styles.inMyTeamsSign}>
                     +
                   </Text>
                 </View>
@@ -178,5 +164,9 @@ const styles = StyleSheet.create({
 
   inMyTeams: {
     marginLeft: 'auto'
+  },
+
+  inMyTeamsSign: {
+    fontWeight: '700'
   }
 })

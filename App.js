@@ -1,34 +1,34 @@
 import React, { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
+import { enableScreens } from 'react-native-screens'
+import { NavigationNativeContainer } from '@react-navigation/native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
-import Navigator from './Components/Navigator'
+import Home from './Components/Home/Home'
+import Account from './Components/Account/Account'
 import Current from './Components/Current'
 
 import { API_URL } from 'react-native-dotenv'
 
-// const settingsKey = '@Setka:settingsKey'
 const leaguesKey = '@Setka:leaguesKey'
 const teamsKey = '@Setka:teamsKey'
 
+enableScreens()
+
 export default function App () {
-  // const [settings, setSettings] = useState()
   const [myLeagues, setMyLeagues] = useState()
   const [myTeams, setMyTeams] = useState()
 
   useEffect(() => {
     const _getSettings = async () => {
-      // const prevLeagues = JSON.parse(await AsyncStorage.getItem(settingsKey))
-      // await AsyncStorage.removeItem(settingsKey)
-      // console.log(await AsyncStorage.getItem(leaguesKey))
-      // await AsyncStorage.removeItem(leaguesKey)
       const leagues = new Map(
         JSON.parse(
           await AsyncStorage.getItem(leaguesKey)
         ) || [
-          [524, true], [754, true], [530, true], [754, true], [403, true]
+          [39, true], [1, true], [135, true], [235, true], [140, true], [78, true]
         ]
       )
 
@@ -37,19 +37,6 @@ export default function App () {
           await AsyncStorage.getItem(teamsKey)
         )
       )
-
-      // console.log(leagues)
-
-      // if (leagues.size === 0 && prevLeagues) {
-      //   leagues = new Map(Object.entries(prevLeagues))
-      // }
-      //
-      // console.log(leagues)
-
-      // const value = await AsyncStorage.getItem(settingsKey)
-      // const storedSettings = JSON.parse(value)
-
-      // console.log(storedSettings)
 
       setMyLeagues(leagues)
       setMyTeams(teams)
@@ -110,6 +97,8 @@ export default function App () {
 
   if (myLeagues === undefined) return null
 
+  const Tab = createBottomTabNavigator()
+
   return (
     <Current.Provider
       value={{
@@ -119,7 +108,16 @@ export default function App () {
         setMyTeams
       }}
     >
-      <Navigator />
+      <NavigationNativeContainer>
+        <Tab.Navigator
+          screenOptions={{
+            tabBarVisible: false
+          }}
+        >
+          <Tab.Screen name="Home" component={Home} />
+          <Tab.Screen name="Account" component={Account} />
+        </Tab.Navigator>
+      </NavigationNativeContainer>
     </Current.Provider>
   )
 }

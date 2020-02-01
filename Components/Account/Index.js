@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
-import PropTypes from 'prop-types'
+import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 
 import {
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -16,23 +15,9 @@ import Current from '../Current'
 
 import { API_URL } from 'react-native-dotenv'
 
-Index.propTypes = {
-  navigation: PropTypes.object
-}
-
-Index.navigationOptions = ({ navigation, navigationOptions }) => ({
-  headerBackTitle: 'Назад',
-  headerLeft: (
-    <TouchableOpacity onPress={() => navigation.navigate('Index')}>
-      <Text style={styles.cancel}>
-        Готово
-      </Text>
-    </TouchableOpacity>
-  )
-})
-
-export default function Index ({ navigation }) {
-  const { myTeams } = useContext(Current)
+export default function Index () {
+  const navigation = useNavigation()
+  const { myTeams, myLeagues } = useContext(Current)
 
   const [countries, setCountries] = useState()
 
@@ -49,60 +34,73 @@ export default function Index ({ navigation }) {
   const myTeamIds = [...myTeams].filter(ob => ob[1]).map(ob => ob[0])
 
   return (
-    <SafeAreaView style={styles.container}>
-      {countries &&
-        <ScrollView style={styles.countries}>
-          {countries.map(country =>
-            <View key={country.id}>
-              <Text style={styles.country}>
-                {country.name}
-              </Text>
-              <View style={styles.leagues}>
-                {country.leagues.map((league, i) =>
-                  <TouchableOpacity
-                    key={league.id}
-                    onPress={() => navigation.navigate('AccountLeague', { league })}
-                  >
-                    <View style={[styles.league, i === 0 ? styles.firstLeague : styles.noFirstLeague]}>
-                      {league.logo &&
-                        <Image
-                          style={styles.logo}
-                          source={{ uri: league.logo }}
-                          resizeMode="contain"
-                        />
-                      }
-                      <View>
-                        <Text>
-                          {league.name}
-                        </Text>
+    <ScrollView style={styles.container}>
+      {countries && countries.map(country =>
+        <View key={country.id}>
+          <Text style={styles.country}>
+            {country.name}
+          </Text>
+          <View style={styles.leagues}>
+            {country.leagues.map((league, i) =>
+              <TouchableOpacity
+                key={league.id}
+                onPress={
+                  () => navigation.navigate(
+                    'Account',
+                    {
+                      screen: 'League',
+                      params: { league }
+                    }
+                  )
+                }
+              >
+                <View style={[styles.league, i === 0 ? styles.firstLeague : styles.noFirstLeague]}>
+                  {league.logo &&
+                    <Image
+                      style={styles.logo}
+                      source={{ uri: league.logo }}
+                      resizeMode="contain"
+                    />
+                  }
+                  <View>
+                    <Text>
+                      {league.name}
+                    </Text>
 
-                        {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length > 0 &&
-                          <Text style={styles.desc}>
-                            уведомления: {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length} ком.
-                          </Text>
-                        }
-                      </View>
+                    {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length > 0 &&
+                      <Text style={styles.desc}>
+                        уведомления: {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length} ком.
+                      </Text>
+                    }
+                  </View>
+
+                  {!!myLeagues.get(league.id) &&
+                    <View style={styles.inMyLeagues}>
+                      <Text style={styles.inMyLeaguesSign}>
+                        +
+                      </Text>
                     </View>
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
-          )}
-        </ScrollView>
-      }
-    </SafeAreaView>
+                  }
+                </View>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+      )}
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f4f4'
+    padding: 16
+    // backgroundColor: '#f4f4f4'
   },
 
-  countries: {
-    padding: 16
-  },
+  // countries: {
+  //
+  // },
 
   country: {
     fontWeight: 'bold',
@@ -145,5 +143,13 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     marginRight: 8
+  },
+
+  inMyLeagues: {
+    marginLeft: 'auto'
+  },
+
+  inMyLeaguesSign: {
+    fontWeight: '700'
   }
 })

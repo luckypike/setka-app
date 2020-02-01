@@ -6,5 +6,6 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': 0,
+    'react/display-name': 0
   }
 }
