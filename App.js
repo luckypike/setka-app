@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 import { enableScreens } from 'react-native-screens'
-import { NavigationNativeContainer } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import axios from 'axios'
 import dayjs from 'dayjs'
@@ -108,7 +108,7 @@ export default function App () {
         setMyTeams
       }}
     >
-      <NavigationNativeContainer>
+      <NavigationContainer>
         <Tab.Navigator
           screenOptions={{
             tabBarVisible: false
@@ -117,7 +117,7 @@ export default function App () {
           <Tab.Screen name="Home" component={Home} />
           <Tab.Screen name="Account" component={Account} />
         </Tab.Navigator>
-      </NavigationNativeContainer>
+      </NavigationContainer>
     </Current.Provider>
   )
 }

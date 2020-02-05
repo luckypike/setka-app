@@ -35,58 +35,60 @@ export default function Index () {
 
   return (
     <ScrollView style={styles.container}>
-      {countries && countries.map(country =>
-        <View key={country.id}>
-          <Text style={styles.country}>
-            {country.name}
-          </Text>
-          <View style={styles.leagues}>
-            {country.leagues.map((league, i) =>
-              <TouchableOpacity
-                key={league.id}
-                onPress={
-                  () => navigation.navigate(
-                    'Account',
-                    {
-                      screen: 'League',
-                      params: { league }
-                    }
-                  )
-                }
-              >
-                <View style={[styles.league, i === 0 ? styles.firstLeague : styles.noFirstLeague]}>
-                  {league.logo &&
-                    <Image
-                      style={styles.logo}
-                      source={{ uri: league.logo }}
-                      resizeMode="contain"
-                    />
+      <View style={styles.countries}>
+        {countries && countries.map(country =>
+          <View key={country.id}>
+            <Text style={styles.country}>
+              {country.name}
+            </Text>
+            <View style={styles.leagues}>
+              {country.leagues.map((league, i) =>
+                <TouchableOpacity
+                  key={league.id}
+                  onPress={
+                    () => navigation.navigate(
+                      'Account',
+                      {
+                        screen: 'League',
+                        params: { league }
+                      }
+                    )
                   }
-                  <View>
-                    <Text>
-                      {league.name}
-                    </Text>
-
-                    {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length > 0 &&
-                      <Text style={styles.desc}>
-                        уведомления: {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length} ком.
+                >
+                  <View style={[styles.league, i === 0 ? styles.firstLeague : styles.noFirstLeague]}>
+                    {league.logo &&
+                      <Image
+                        style={styles.logo}
+                        source={{ uri: league.logo }}
+                        resizeMode="contain"
+                      />
+                    }
+                    <View>
+                      <Text>
+                        {league.name}
                       </Text>
+
+                      {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length > 0 &&
+                        <Text style={styles.desc}>
+                          уведомления: {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length} ком.
+                        </Text>
+                      }
+                    </View>
+
+                    {!!myLeagues.get(league.id) &&
+                      <View style={styles.inMyLeagues}>
+                        <Text style={styles.inMyLeaguesSign}>
+                          +
+                        </Text>
+                      </View>
                     }
                   </View>
-
-                  {!!myLeagues.get(league.id) &&
-                    <View style={styles.inMyLeagues}>
-                      <Text style={styles.inMyLeaguesSign}>
-                        +
-                      </Text>
-                    </View>
-                  }
-                </View>
-              </TouchableOpacity>
-            )}
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        </View>
-      )}
+        )}
+      </View>
     </ScrollView>
   )
 }
@@ -95,12 +97,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16
-    // backgroundColor: '#f4f4f4'
   },
 
-  // countries: {
-  //
-  // },
+  countries: {
+    paddingBottom: 48
+  },
 
   country: {
     fontWeight: 'bold',
