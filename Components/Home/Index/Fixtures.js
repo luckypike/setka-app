@@ -17,7 +17,7 @@ export default function Fixtures ({ fixtures }) {
   return (
     <View style={styles.container}>
       {fixtures.map(league =>
-        <League {...league} key={league.id} />
+        <League league={league} fixtures={league.fixtures} key={league.id} />
       )}
 
       {fixtures.length === 0 &&

@@ -12,7 +12,7 @@ import {
 
 import Score from './Fixture/Score'
 import Details from './Fixture/Details'
-import Current from '../Current'
+import Current from '../../Current'
 
 Fixture.propTypes = {
   fixture: PropTypes.object

@@ -3,9 +3,10 @@ import { useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Svg, Circle, Path } from 'react-native-svg'
 
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, View, Text } from 'react-native'
 
 import Index from './Index'
+import League from './League'
 
 const Stack = createNativeStackNavigator()
 
@@ -23,6 +24,24 @@ export default function Home () {
             <TouchableOpacity onPress={() => navigation.navigate('Account')}>
               <Account />
             </TouchableOpacity>
+          )
+        }}
+      />
+
+      <Stack.Screen
+        name="League"
+        component={League}
+        options={{
+          title: 'Setka',
+          headerShown: true,
+          headerLargeTitle: true,
+          stackPresentation: 'modal',
+          headerRight: () => (
+            <View>
+              <Text>
+                Cancel
+              </Text>
+            </View>
           )
         }}
       />

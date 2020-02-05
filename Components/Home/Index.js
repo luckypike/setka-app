@@ -11,8 +11,8 @@ import {
 
 import Current from '../Current'
 
-import Days from './Days'
-import Fixtures from './Fixtures'
+import Days from './Index/Days'
+import Fixtures from './Index/Fixtures'
 
 import { API_URL } from 'react-native-dotenv'
 
