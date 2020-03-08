@@ -4,6 +4,8 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios'
 import { enableScreens } from 'react-native-screens'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import * as RNLocalize from 'react-native-localize'
+import I18n from 'i18n-js'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
@@ -17,6 +19,12 @@ const leaguesKey = '@Setka:leaguesKey'
 const teamsKey = '@Setka:teamsKey'
 
 enableScreens()
+
+I18n.pluralization.ru = function (count) {
+  var key = count % 10 === 1 && count % 100 !== 11 ? 'one' : [2, 3, 4].indexOf(count % 10) >= 0 && [12, 13, 14].indexOf(count % 100) < 0 ? 'few' : count % 10 === 0 || [5, 6, 7, 8, 9].indexOf(count % 10) >= 0 || [11, 12, 13, 14].indexOf(count % 100) >= 0 ? 'many' : 'other'
+  if (count < 1) key = 'zero'
+  return [key]
+}
 
 export default function App () {
   const [myLeagues, setMyLeagues] = useState()
@@ -43,6 +51,20 @@ export default function App () {
     }
 
     _getSettings()
+
+    // I18n.default_locale = 'en'
+
+    const {
+      languageTag
+    } = RNLocalize.findBestAvailableLanguage(['en', 'ru'])
+
+    const locales = {
+      en: () => require('./locales/en.json'),
+      ru: () => require('./locales/ru.json')
+    }
+
+    if (languageTag) I18n.locale = languageTag
+    I18n.translations = { [I18n.locale]: locales[I18n.locale]() }
   }, [])
 
   useEffect(() => {
@@ -105,7 +127,8 @@ export default function App () {
         myLeagues,
         setMyLeagues,
         myTeams,
-        setMyTeams
+        setMyTeams,
+        I18n
       }}
     >
       <NavigationContainer>

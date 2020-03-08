@@ -1,0 +1,26 @@
+{
+  "standings": {
+    "title": "Table"
+  },
+  "settings": {
+    "title": "Settings",
+    "notifications": {
+      "label": "Notifications",
+      "teams": {
+        "one": "1 team",
+        "other": "{{count}} teams",
+        "zero": "no teams selected"
+
+
+      }
+    },
+
+    "league": {
+      "show": "Show in Setka",
+      "desc": "Enable this option to display league fixtures on your schedule. Also you can choose teams to receive notifications about match starting."
+    }
+  },
+
+  "done": "Done",
+  "close": "Close"
+}

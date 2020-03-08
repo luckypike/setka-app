@@ -1,9 +1,9 @@
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createNativeStackNavigator } from 'react-native-screens/native-stack'
 import { Svg, Circle, Path } from 'react-native-svg'
 
-import { TouchableOpacity, View, Text } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
 import Index from './Index'
 import League from './League'
@@ -32,17 +32,7 @@ export default function Home () {
         name="League"
         component={League}
         options={{
-          title: 'Setka',
-          headerShown: true,
-          headerLargeTitle: true,
-          stackPresentation: 'modal',
-          headerRight: () => (
-            <View>
-              <Text>
-                Cancel
-              </Text>
-            </View>
-          )
+          stackPresentation: 'modal'
         }}
       />
     </Stack.Navigator>

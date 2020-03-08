@@ -55,7 +55,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* setkaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = setkaTests.m; sourceTree = "<group>"; };
 		0D449569E09724992DA76F62 /* Pods-setka-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-setka-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-setka-tvOS/Pods-setka-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* setka.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = setka.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Setka.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Setka.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = setka/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = setka/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -190,7 +190,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* setka.app */,
+				13B07F961A680F5B00A75B9A /* Setka.app */,
 				00E356EE1AD99517003FC87E /* setkaTests.xctest */,
 				3B9E4A0A237226D100A78A1C /* push.appex */,
 			);
@@ -253,7 +253,7 @@
 			);
 			name = setka;
 			productName = setka;
-			productReference = 13B07F961A680F5B00A75B9A /* setka.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Setka.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3B9E4A09237226D000A78A1C /* push */ = {
@@ -549,7 +549,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.setka;
-				PRODUCT_NAME = setka;
+				PRODUCT_NAME = Setka;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -575,7 +575,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.setka;
-				PRODUCT_NAME = setka;
+				PRODUCT_NAME = Setka;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

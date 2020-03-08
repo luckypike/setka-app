@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import PropTypes from 'prop-types'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 
@@ -68,11 +69,9 @@ export default function Index () {
                         {league.name}
                       </Text>
 
-                      {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length > 0 &&
-                        <Text style={styles.desc}>
-                          уведомления: {league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id).length} ком.
-                        </Text>
-                      }
+                      <Notifications
+                        teams={league.teams.filter(t => myTeamIds.includes(t.id)).map(t => t.id)}
+                      />
                     </View>
 
                     {!!myLeagues.get(league.id) &&
@@ -90,6 +89,22 @@ export default function Index () {
         )}
       </View>
     </ScrollView>
+  )
+}
+
+Notifications.propTypes = {
+  teams: PropTypes.array
+}
+
+function Notifications ({ teams }) {
+  const { I18n } = useContext(Current)
+
+  if (teams.length < 1) return null
+
+  return (
+    <Text style={styles.desc}>
+      {I18n.t('settings.notifications.label')}: {I18n.t('settings.notifications.teams', { count: teams.length })}
+    </Text>
   )
 }
 

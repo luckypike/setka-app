@@ -13,8 +13,10 @@ import {
 } from 'react-native'
 
 import Current from '../Current'
+import useI18n from '../I18n'
 
 export default function League () {
+  const I18n = useI18n()
   const route = useRoute()
   const { league } = route.params
 
@@ -38,14 +40,10 @@ export default function League () {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scroll}>
-        <Text style={styles.desc}>
-          Включить лигу если хотите чтобы все матчи этой лиги были видны в вашем расписании матчей
-        </Text>
-
         <View style={styles.league}>
           <View style={styles.leagueText}>
             <Text>
-              Показывать в сетке
+              {I18n.t('settings.league.show')}
             </Text>
           </View>
 
@@ -58,7 +56,7 @@ export default function League () {
         </View>
 
         <Text style={styles.desc}>
-          Выберите команды чтобы получать уведомления за 1 час до начала их мачта
+          {I18n.t('settings.league.desc')}
         </Text>
 
         <View style={styles.teams}>
@@ -108,7 +106,8 @@ const styles = StyleSheet.create({
   league: {
     backgroundColor: '#ffffff',
     borderRadius: 8,
-    marginBottom: 32,
+    marginTop: 32,
+    marginBottom: 16,
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 16,
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
   },
 
   desc: {
-    marginBottom: 16
+    marginBottom: 32
   },
 
   leagueText: {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import { useNavigation } from '@react-navigation/native'
 
@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 
 import Fixture from './Fixture'
+import Current from '../../Current'
 
 League.propTypes = {
   league: PropTypes.object.isRequired,
@@ -19,6 +20,7 @@ League.propTypes = {
 
 export default function League ({ league, fixtures }) {
   const navigation = useNavigation()
+  const { I18n } = useContext(Current)
 
   return (
     <View style={styles.container}>
@@ -40,7 +42,7 @@ export default function League ({ league, fixtures }) {
           onPress={() => navigation.navigate('League', { league })}
         >
           <Text style={styles.tableText}>
-            Таблица
+            {I18n.t('standings.title')}
           </Text>
         </TouchableOpacity>
       </View>

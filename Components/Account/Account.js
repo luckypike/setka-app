@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createNativeStackNavigator } from 'react-native-screens/native-stack'
 
 import {
   StyleSheet,
@@ -10,10 +10,12 @@ import {
 
 import Index from './Index'
 import League from './League'
+import useI18n from '../I18n'
 
 const Stack = createNativeStackNavigator()
 
 export default function Account () {
+  const I18n = useI18n()
   const navigation = useNavigation()
 
   return (
@@ -22,12 +24,12 @@ export default function Account () {
         name="Index"
         component={Index}
         options={{
-          title: 'Настройки',
+          title: I18n.t('settings.title'),
           headerLargeTitle: true,
           headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
               <Text style={styles.cancel}>
-                Готово
+                {I18n.t('done')}
               </Text>
             </TouchableOpacity>
           )
@@ -49,8 +51,7 @@ export default function Account () {
 const styles = StyleSheet.create({
   cancel: {
     fontSize: 17,
-    fontWeight: '500',
-    // marginHorizontal: 16,
+    fontWeight: '600',
     color: '#0d7ffb'
   }
 })
