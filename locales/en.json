@@ -22,5 +22,8 @@
   },
 
   "done": "Done",
-  "close": "Close"
+  "close": "Close",
+
+  "updating": "Updating...",
+  "updated": "Updated"
 }
