@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { useRoute, useNavigation } from '@react-navigation/native'
+import { useRoute } from '@react-navigation/native'
 import axios from 'axios'
 
 import {
   StyleSheet,
   ScrollView,
   Image,
-  TouchableOpacity,
   View,
   Text
 } from 'react-native'
-
-import useI18n from '../I18n'
 
 import { API_URL } from 'react-native-dotenv'
 
@@ -36,10 +33,8 @@ export default function League () {
   }, [league.id])
 
   return (
-    <View>
-      <Header />
-
-      <ScrollView style={styles.container}>
+    <ScrollView>
+      <View style={styles.container}>
         {standings && standings.map((standing, i) =>
           <View key={standing.id} style={[styles.standing, i === 0 ? styles.firstStanding : styles.noFirstStanding]}>
             <Text style={styles.rank}>
@@ -66,39 +61,14 @@ export default function League () {
             </Text>
           </View>
         )}
-      </ScrollView>
-    </View>
-  )
-}
-
-function Header () {
-  const I18n = useI18n()
-  const navigation = useNavigation()
-
-  return (
-    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.header}>
-      <Text style={styles.close}>
-        {I18n.t('close')}
-      </Text>
-    </TouchableOpacity>
+      </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-  },
-
-  header: {
-    backgroundColor: '#ffffff',
-    paddingHorizontal: 20,
-    paddingVertical: 18,
-    borderBottomColor: '#ddd',
-    borderBottomWidth: 0.5
-  },
-
-  close: {
-    fontSize: 17,
-    color: '#0d7ffb'
+    paddingBottom: 32
   },
 
   standing: {

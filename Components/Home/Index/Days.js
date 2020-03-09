@@ -123,7 +123,7 @@ function Day ({ day, active, onDayPress, count }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16
+    marginBottom: 32
   },
 
   days: {

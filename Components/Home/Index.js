@@ -68,13 +68,6 @@ export default function Index () {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Days
-          onDateChange={handleDateChange}
-          initDate={date}
-          leagues={leagues}
-          appState={appState}
-        />
-
         <View style={styles.activity}>
           {(updated || updated === false) &&
             <>
@@ -93,6 +86,13 @@ export default function Index () {
           }
         </View>
 
+        <Days
+          onDateChange={handleDateChange}
+          initDate={date}
+          leagues={leagues}
+          appState={appState}
+        />
+
         {fixtures &&
           <Fixtures fixtures={fixtures} />
         }
@@ -103,8 +103,7 @@ export default function Index () {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    paddingVertical: 32
+    paddingBottom: 32
   },
 
   activity: {
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: 100,
     alignSelf: 'center',
-    marginBottom: 16
+    marginVertical: 8
   },
 
   activityIndicator: {
