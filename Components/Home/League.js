@@ -17,6 +17,7 @@ export default function League () {
   const { league } = route.params
 
   const [standings, setStandings] = useState()
+  const [groups, setGroups] = useState()
 
   useEffect(() => {
     const _fetch = async () => {
@@ -27,6 +28,7 @@ export default function League () {
       })
 
       setStandings(data.standings)
+      setGroups(data.groups)
     }
 
     _fetch()
@@ -35,30 +37,40 @@ export default function League () {
   return (
     <ScrollView>
       <View style={styles.container}>
-        {standings && standings.map((standing, i) =>
-          <View key={standing.id} style={[styles.standing, i === 0 ? styles.firstStanding : styles.noFirstStanding]}>
-            <Text style={styles.rank}>
-              {standing.rank}
-            </Text>
-
-            <View style={styles.team}>
-              <Image style={styles.logo} source={{ uri: standing.team.logo }} resizeMode="contain" />
-              <Text
-                style={styles.name}
-                ellipsizeMode="tail"
-                numberOfLines={1}
-              >
-                {standing.team.name}
+        {groups && groups.map((group, i) =>
+          <View style={styles.group} key={i}>
+            {groups.length > 1 &&
+              <Text style={styles.groupName}>
+                {group.name}
               </Text>
-            </View>
+            }
 
-            <Text style={styles.played}>
-              {standing.played}
-            </Text>
+            {group.standings.map((standing, i) =>
+              <View key={standing.id} style={[styles.standing, i === 0 ? styles.firstStanding : styles.noFirstStanding]}>
+                <Text style={styles.rank}>
+                  {standing.rank}
+                </Text>
 
-            <Text style={styles.points}>
-              {standing.points}
-            </Text>
+                <View style={styles.team}>
+                  <Image style={styles.logo} source={{ uri: standing.team.logo }} resizeMode="contain" />
+                  <Text
+                    style={styles.name}
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                  >
+                    {standing.team.name}
+                  </Text>
+                </View>
+
+                <Text style={styles.played}>
+                  {standing.played}
+                </Text>
+
+                <Text style={styles.points}>
+                  {standing.points}
+                </Text>
+              </View>
+            )}
           </View>
         )}
       </View>
@@ -69,6 +81,17 @@ export default function League () {
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 32
+  },
+
+  group: {
+    marginTop: 16,
+    marginBottom: 16
+  },
+
+  groupName: {
+    marginBottom: 8,
+    fontWeight: '700',
+    paddingLeft: 48
   },
 
   standing: {
