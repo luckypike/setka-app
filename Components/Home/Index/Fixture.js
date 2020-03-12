@@ -54,7 +54,7 @@ export default function Fixture ({ fixture }) {
         {!fixture.score &&
           <View style={styles.time}>
             <Text style={styles.timeText}>
-              {dayjs(fixture.starting_at).format('HH:mm')}
+              {fixture.status === 'PST' ? '—' : dayjs(fixture.starting_at).format('HH:mm')}
             </Text>
           </View>
         }
